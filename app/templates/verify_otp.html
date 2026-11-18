@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+{# Second factor form. The page auto-requests a new OTP when the timer hits zero. #}
+<form method="post" class="card">
+  <h2>MFA Verification</h2>
+  <p>Enter your 6-digit OTP.</p>
+  <p>OTP expires in: <strong id="otp-countdown">{{ ttl }}</strong> seconds</p>
+
+  <label>One-Time Password</label>
+  <input name="otp" type="text" inputmode="numeric" maxlength="6" pattern="\d{6}" required />
+
+  <button id="verify-btn" type="submit">Verify OTP</button>
+</form>
+
+<form id="resend-otp-form" method="post" action="{{ url_for('resend_otp') }}"></form>
+
+<script>
+  (function () {
+    // Keep the countdown visible and submit the hidden resend form after expiry.
+    const countdownEl = document.getElementById("otp-countdown");
+    const verifyBtn = document.getElementById("verify-btn");
+    const resendForm = document.getElementById("resend-otp-form");
+    let secondsLeft = parseInt(countdownEl.textContent || "0", 10);
+    let resent = false;
+
+    function tick() {
+      secondsLeft = Math.max(0, secondsLeft);
+      countdownEl.textContent = String(secondsLeft);
+
+      if (secondsLeft <= 0 && !resent) {
+        resent = true;
+        verifyBtn.disabled = true;
+        verifyBtn.textContent = "Generating new OTP...";
+        resendForm.submit();
+        return;
+      }
+
+      secondsLeft -= 1;
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  })();
+</script>
+{% endblock %}
