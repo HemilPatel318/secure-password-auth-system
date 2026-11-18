@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+{# Registration form with live password policy feedback. #}
+<form method="post" class="card" novalidate>
+  <h2>Register</h2>
+
+  <label>Username</label>
+  <input name="username" type="text" required />
+
+  <label>Email</label>
+  <input name="email" type="email" required />
+
+  <label>Password</label>
+  <div class="password-field">
+    <input id="password" name="password" type="password" required />
+    <button type="button" class="password-toggle" data-toggle-password="#password">Show</button>
+  </div>
+
+  <ul id="password-rules" class="rules">
+    <li data-rule="length">At least 10 characters</li>
+    <li data-rule="upper">At least one uppercase letter</li>
+    <li data-rule="lower">At least one lowercase letter</li>
+    <li data-rule="digit">At least one number</li>
+    <li data-rule="special">At least one special character</li>
+  </ul>
+
+  <button type="submit">Create Account</button>
+  <p><a href="{{ url_for('login') }}">Already have an account? Login</a></p>
+</form>
+{# Frontend helpers are only loaded on pages that use them. #}
+<script src="{{ url_for('static', filename='js/password_policy.js') }}"></script>
+<script src="{{ url_for('static', filename='js/password_toggle.js') }}"></script>
+{% endblock %}
