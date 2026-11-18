@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+{# Simple protected page used to show that MFA completed successfully. #}
+<section class="card">
+  <h2>Dashboard</h2>
+  <p><strong>Welcome:</strong> {{ user['username'] }}</p>
+  <p><strong>Email:</strong> {{ user['email'] }}</p>
+  <p>This page is protected and only available after password + OTP authentication.</p>
+  <form action="{{ url_for('logout') }}" method="post">
+    <button type="submit">Logout</button>
+  </form>
+</section>
+{% endblock %}
