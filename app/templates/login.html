@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+{# First factor login form. Successful submission leads to the OTP page. #}
+<form method="post" class="card">
+  <h2>Login</h2>
+
+  <label>Email</label>
+  <input name="email" type="email" required />
+
+  <label>Password</label>
+  <div class="password-field">
+    <input id="login-password" name="password" type="password" required />
+    <button type="button" class="password-toggle" data-toggle-password="#login-password">Show</button>
+  </div>
+
+  <button type="submit">Verify Password</button>
+  <p><a href="{{ url_for('register') }}">Create new account</a></p>
+</form>
+<script src="{{ url_for('static', filename='js/password_toggle.js') }}"></script>
+{% endblock %}
